@@ -10,3 +10,12 @@ Steps for studying white matter morphology
 5. run sript to get shapeDNA of each surface file - get_shapeDNA
 6. read .ev (shapeDNA) files into python - parse_ev_files.py
 7. do some ML on the data
+
+
+# Preprocessing steps for HCP data
+
+1. download the subjects from HCP
+2. the T1 is already ACPC aligned, just going to use that for now, otherwise do ACPC alignment
+3. split the diffusion data into separate shells, going to use shell 2000 for now
+    run batch_split.m
+4. do Dti init
