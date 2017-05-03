@@ -4,12 +4,13 @@ Created on Tue May  2 10:18:16 2017
 
 @author: lindseykitchell
 
-This is a function that takes in a binary nifti image and outputs an
-.stl surface mesh.
+This is a function that takes in a binary nifti image and outputs a
+.ply surface mesh.
 
 inputs:
 img_path: path string to nifti image
 smooth_iter: number of smoothing iterations, default = 10
+surf_name: string of surface file name ending in .ply
 
 Example:
 
@@ -18,14 +19,14 @@ import os
 img_path = os.path.join('/Users/lindseykitchell/Box Sync/fiberVolumes/',
                         'HCP_105115_STREAM_Lmax8_conn6_boolVol_R_Arc.nii.gz')
 
-niftiMask2surface(img_path, 15)
+niftiMask2Surface(img_path, 15, "arc_smooth.ply")
 
 """
 
 import vtk
 
 
-def niftiMask2Surface(img_path, smooth_iter=10):
+def niftiMask2Surface(img_path, smooth_iter=10, surf_name):
     # import the binary nifti image
     reader = vtk.vtkNIFTIImageReader()
     reader.SetFileName(img_path)
@@ -56,8 +57,8 @@ def niftiMask2Surface(img_path, smooth_iter=10):
     # close_holes.SetHoleSize(10)
     # close_holes.Update()
 
-    writer = vtk.vtkSTLWriter()
+    writer = vtk.vtkPLYWriter()
     writer.SetInputConnection(connectivityFilter.GetOutputPort())
-    writer.SetFileTypeToBinary()
-    writer.SetFileName("arc_smooth.stl")
+    writer.SetFileTypeToASCII()
+    writer.SetFileName(surf_name)
     writer.Write()
